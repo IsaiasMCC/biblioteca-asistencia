@@ -23,6 +23,9 @@ Route::get('/login', [AuthController::class, 'index'])->name('auth.index')->midd
 Route::post('/login', [AuthController::class, 'store'])->name('auth.store')->middleware([AuthNotCheck::class]);
 
 Route::middleware([AuthCheckCuston::class])->group(function () {
+    Route::get('/', function(){
+        return "";
+    });
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::resource('roles', RoleController::class);
     Route::patch('/roles/permisos/{id}', [RoleController::class, 'updatePermissions'])->name('roles.update.permissions');
