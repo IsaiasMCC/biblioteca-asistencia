@@ -36,7 +36,7 @@
                 toastr.error(@json(session('error')), 'Error');
             @endif
             @if (session('success'))
-                toastr.error(@json(session('success')), 'Exito');
+                toastr.success(@json(session('success')), 'Exito');
             @endif
         });
     </script>

@@ -112,9 +112,8 @@ class RoleController extends Controller
             $role = Role::findOrFail($id);
             $permissions = $request->input('permissions', []);
             $role->syncPermissions($permissions);
-            return redirect()->back()->with('update', '¡Permisos actualizado correctamente!');
+            return redirect()->back()->with('success', '¡Permisos actualizado correctamente!');
         } catch (\Throwable $th) {
-            dd($th);
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Ocurrió un error al editar el rol.');

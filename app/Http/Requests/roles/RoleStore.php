@@ -23,7 +23,7 @@ class RoleStore extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:500',
+            'description' => 'required|string|max:500',
         ];
     }
 
@@ -33,7 +33,8 @@ class RoleStore extends FormRequest
             'name.required' => 'El nombre del rol es obligatorio.',
             'name.string' => 'El nombre del rol debe ser una cadena de texto.',
             'name.max' => 'El nombre del rol no puede exceder los 255 caracteres.',
-            'description.string' => 'La descripción debe ser una cadena de texto.',
+            'description.required' => 'El nombre del rol es obligatorio.',
+            'description.string' => 'La descripción del rol es obligatorio.',
             'description.max' => 'La descripción no puede exceder los 500 caracteres.',
         ];
     }
