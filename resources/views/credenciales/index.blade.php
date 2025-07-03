@@ -62,7 +62,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `/credenciales/${id}`,
+                            url: `{{ url('credenciales') }}/${id}`,
                             method: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'

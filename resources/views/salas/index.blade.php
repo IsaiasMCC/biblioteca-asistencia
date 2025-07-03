@@ -47,8 +47,8 @@
                 minute: '2-digit',
                 hour12: false
             });
-            const titleReport = `Reporte de Usuarios`;
-            const fileName = `reporte-usuarios-${today}-${time}`;
+            const titleReport = `Reporte de Salas`;
+            const fileName = `reporte-salas-${today}-${time}`;
             $('.dataTables-example').DataTable({
                 pageLength: 25,
                 responsive: true,
@@ -91,7 +91,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `/salas/${salaId}`,
+                            url: `{{ url('salas') }}/${salaId}`,
                             type: "DELETE",
                             headers: {
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}"

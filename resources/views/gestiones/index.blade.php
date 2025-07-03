@@ -47,8 +47,8 @@
                 minute: '2-digit',
                 hour12: false
             });
-            const titleReport = `Reporte de Roles`;
-            const fileName = `reporte-roles-${today}-${time}`;
+            const titleReport = `Reporte de Gestiones`;
+            const fileName = `reporte-gestiones-${today}-${time}`;
             $('.dataTables-example').DataTable({
                 pageLength: 25,
                 responsive: true,
@@ -90,7 +90,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `/gestiones/${roleId}`,
+                            url: `{{ url('gestiones') }}/${roleId}`,
                             type: "DELETE",
                             headers: {
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}"

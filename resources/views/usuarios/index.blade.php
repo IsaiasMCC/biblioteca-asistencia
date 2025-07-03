@@ -91,7 +91,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `/usuarios/${userId}`,
+                            url: `{{ url('usuarios') }}/${userId}`,
                             type: "DELETE",
                             headers: {
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}"

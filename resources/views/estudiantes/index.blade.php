@@ -64,7 +64,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `/estudiantes/${estudianteId}`,
+                            url: `{{ url('estudiantes') }}/${estudianteId}`,
                             type: "DELETE",
                             headers: {
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}"

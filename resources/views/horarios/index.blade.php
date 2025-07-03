@@ -77,7 +77,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `/horarios/${id}`,
+                            url: `{{ url('horarios') }}/${id}`,
                             type: "DELETE",
                             headers: {
                                 "X-CSRF-TOKEN": "{{ csrf_token() }}"
