@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('fecha');
             $table->string('hora');
-            $table->foreignId('credencial_id')->constrained('credenciales');
-            $table->foreignId('sala_id')->nullable()->constrained('salas');
+            $table->foreignId('credencial_id')->constrained('credenciales')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sala_id')->nullable()->constrained('salas')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

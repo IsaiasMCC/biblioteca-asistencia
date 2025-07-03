@@ -3,6 +3,7 @@
 @push('title', 'Inicio')
 
 @section('content_header', 'Accesibilidad')
+
 @section('breadcrum')
     <li class="breadcrumb-item">
         <a href="{{ route('home') }}">Home</a>
@@ -11,29 +12,44 @@
         <strong>Accesibilidad</strong>
     </li>
 @endsection
-@section('style')
+@push('styles')
 
-@endsection
-@section('script')
+@endpush
+
+@push('scripts')
     <script>
-        $(document).ready(function() {
-            $(".touchspin1").TouchSpin({
-                buttondown_class: 'btn btn-white',
-                buttonup_class: 'btn btn-white'
+        window.addEventListener('DOMContentLoaded', function() {
+            const selector = document.getElementById('fontSizeSelector');
+            if (!selector) return;
+
+            const saved = localStorage.getItem('fontSize');
+            if (saved) {
+                document.documentElement.style.fontSize = saved;
+                selector.value = saved;
+            }
+
+            selector.addEventListener('change', function() {
+                document.documentElement.style.fontSize = this.value;
+                localStorage.setItem('fontSize', this.value);
             });
         });
     </script>
-@endsection
+@endpush
+
+
 @section('content')
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox-content style-tema">
                 <div class="row">
                     <div class="col-md-4">
-                        <p class="font-bold input-label">
-                            Tamaño de fuente
-                        </p>
-                        <input class="touchspin1" type="text" value="14" name="demo1">
+                        <select id="fontSizeSelector" class="form-control w-auto">
+                            <option value="12px">Pequeño</option>
+                            <option value="16px" selected>Normal</option>
+                            <option value="20px">Grande</option>
+                            <option value="25px">Muy grande</option>
+                        </select>
+
                     </div>
                 </div>
             </div>

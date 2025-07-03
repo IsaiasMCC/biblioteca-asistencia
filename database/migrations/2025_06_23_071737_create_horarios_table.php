@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('domingo');
             $table->string('hora_inicio');
             $table->string('hora_fin');
-            $table->foreignId('sala_id')->constrained('salas')->onDelete('cascade');
+            $table->foreignId('sala_id')->constrained('salas')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

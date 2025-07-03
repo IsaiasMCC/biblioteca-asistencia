@@ -108,17 +108,17 @@
                         @if (isset($credencial->usuario->estudiante) && isset($credencial->usuario->estudiante->foto_url))
                             <img src="{{ asset('storage/students/' . $credencial->usuario->estudiante->foto_url) }}" alt="Foto">
                         @else
-                            <img src="{{ asset('images/default-user.png') }}" alt="Foto genérica">
+                            <img src="{{ asset('images/default-profile.jpg') }}" alt="Foto genérica">
                         @endif
                     </div>
                     <div class="info-text">
                         <div>
                             <strong>{{ strtoupper($credencial->usuario->nombres . ' ' . $credencial->usuario->apellidos) }}</strong>
                         </div>
-                        <div>Registro: {{ $credencial->usuario->estudiante->registro }}</div>
-                        <div>Carrera: {{ $credencial->usuario->estudiante->carrera }}</div>
-                        <div>Emitido: {{ \Carbon\Carbon::parse($credencial->fecha_emicion)->format('d/m/Y') }}</div>
-                        <div>Expira: {{ \Carbon\Carbon::parse($credencial->fecha_expiracion)->format('d/m/Y') }}</div>
+                        <div> <span class="font-bold"> Registro:</span> {{ $credencial->usuario->estudiante->registro }}</div>
+                        <div><span class="font-bold"> Carrera:</span> {{ $credencial->usuario->estudiante->carrera }}</div>
+                        {{-- <div><span class="font-bold"> Emitido:</span> {{ \Carbon\Carbon::parse($credencial->fecha_emicion)->format('d/m/Y') }}</div> --}}
+                        <div> <span class="font-bold"> Expira:</span> {{ \Carbon\Carbon::parse($credencial->fecha_expiracion)->format('d/m/Y') }}</div>
                     </div>
                 </div>
                 <div class="text-center font-bold">
@@ -141,10 +141,10 @@
                         <div>
                             <strong>{{ strtoupper($credencial->usuario->nombres . ' ' . $credencial->usuario->apellidos) }}</strong>
                         </div>
-                        <div>CI: {{ $credencial->usuario->ci }}</div>
-                        <div>Cargo: {{ $credencial->usuario->role->name }}</div>
-                        <div>Emitido: {{ \Carbon\Carbon::parse($credencial->fecha_emicion)->format('d/m/Y') }}</div>
-                        <div>Expira: {{ \Carbon\Carbon::parse($credencial->fecha_expiracion)->format('d/m/Y') }}</div>
+                        <div><span class="font-bold"> CI:</span> {{ $credencial->usuario->ci }}</div>
+                        <div><span class="font-bold"> Cargo:</span> {{ $credencial->usuario->role->name }}</div>
+                        {{-- <div><span class="font-bold"> Emitido:</span> {{ \Carbon\Carbon::parse($credencial->fecha_emicion)->format('d/m/Y') }}</div> --}}
+                        <div><span class="font-bold"> Expira:</span> {{ \Carbon\Carbon::parse($credencial->fecha_expiracion)->format('d/m/Y') }}</div>
                     </div>
                 </div>
                 <div class="text-center font-bold">

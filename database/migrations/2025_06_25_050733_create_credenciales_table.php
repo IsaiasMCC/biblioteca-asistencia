@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('fecha_expiracion');
             $table->boolean('estado')->default(true);
             // $table->foreignId('estudiante_id')->constrained('estudiantes')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('usuario_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('gestion_id')->constrained('gestiones')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('usuario_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('gestion_id')->constrained('gestiones')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

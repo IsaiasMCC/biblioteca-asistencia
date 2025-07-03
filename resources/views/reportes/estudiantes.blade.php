@@ -7,11 +7,11 @@
 @endsection
 
 @section('content')
-    <form method="GET" action="{{ route('reportes.asistencias') }}">
+    <form method="GET" action="{{ route('reportes.estudiantes') }}">
         <div class="row">
             <div class="col-md-4">
                 <label>Fecha Inicial</label>
-                <input type="date" name="fecha_inicial" class="form-control" value="{{ request('fecha_inicial') }}">
+                <input type="date" name="fecha_inicial" class="form-control" value="{{ request('fecha_inicio') }}">
             </div>
             <div class="col-md-4">
                 <label>Fecha Final</label>
@@ -25,28 +25,76 @@
 
     <hr>
 
-    {{-- @if (isset($asistencias->count())) --}}
-        <table class="table table-bordered mt-3">
-            <thead>
+    <h2>Reporte de Ingresos por Estudiante</h2>
+
+    @if ($fechaInicio && $fechaFin)
+        <p>Desde: {{ $fechaInicio }} | Hasta: {{ $fechaFin }}</p>
+    @elseif($fechaInicio)
+        <p>Desde: {{ $fechaInicio }}</p>
+    @elseif($fechaFin)
+        <p>Hasta: {{ $fechaFin }}</p>
+    @endif
+
+    @forelse($ingresos as $estudianteId => $grupo)
+        @php
+            $usuario = $grupo->first()->credencial->usuario;
+            $estudiante = $usuario->estudiante;
+        @endphp
+
+        <h3>{{ $usuario->nombres }} {{ $usuario->apellidos }} (CI: {{ $usuario->ci }})</h3>
+        <p>Total ingresos: {{ $grupo->count() }}</p>
+
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+            </tr>
+            @foreach ($grupo as $i => $ingreso)
+                @php
+                    $fecha = $ingreso->created_at ? \Carbon\Carbon::parse($ingreso->created_at) : null;
+                @endphp
                 <tr>
-                    <th>CI</th>
-                    <th>Nombre</th>
-                    <th>Rol</th>
-                    <th>Estudiante</th>
+                    <td>{{ $i + 1 }}</td>
+                    <td>{{ $fecha ? $fecha->format('Y-m-d') : '—' }}</td>
+                    <td>{{ $fecha ? $fecha->format('H:i:s') : '—' }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                {{-- @foreach ($asistencias as $item)
-                    <tr>
-                        <td>{{ $item['ci'] }}</td>
-                        <td>{{ $item['nombre'] }}</td>
-                        <td>{{ $item['rol'] }}</td>
-                        <td><strong>{{ $item['total_asistencias'] }}</strong></td>
-                    </tr>
-                @endforeach --}}
-            </tbody>
+            @endforeach
         </table>
-    {{-- @else
-        <div class="alert alert-warning mt-4">No hay asistencias para mostrar.</div>
-    @endif --}}
+        <br>
+    @empty
+        <p>No hay ingresos registrados en el rango indicado.</p>
+    @endforelse
+    <h2>Reporte de Salidas por Estudiante</h2>
+    @forelse($salidas as $estudianteId => $grupo)
+        @php
+            $usuario = $grupo->first()->credencial->usuario;
+            $estudiante = $usuario->estudiante;
+        @endphp
+
+        <h3>{{ $usuario->nombres }} {{ $usuario->apellidos }} (CI: {{ $usuario->ci }})</h3>
+        <p>Total Salidas: {{ $grupo->count() }}</p>
+
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>#</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+            </tr>
+            @foreach ($grupo as $i => $salida)
+                @php
+                    $fecha = $salida->created_at ? \Carbon\Carbon::parse($salida->created_at) : null;
+                @endphp
+                <tr>
+                    <td>{{ $i + 1 }}</td>
+                    <td>{{ $fecha ? $fecha->format('Y-m-d') : '—' }}</td>
+                    <td>{{ $fecha ? $fecha->format('H:i:s') : '—' }}</td>
+                </tr>
+            @endforeach
+        </table>
+        <br>
+    @empty
+        <p>No hay salidas registrados en el rango indicado.</p>
+    @endforelse
+
 @endsection

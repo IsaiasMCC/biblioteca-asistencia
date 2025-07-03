@@ -33,6 +33,15 @@
     @else
         <link rel="stylesheet" href="{{ asset('css/theme/day.css') }}" id="theme-style">
     @endif
+
+    <script>
+        (function() {
+            const fontSize = localStorage.getItem('fontSize');
+            if (fontSize) {
+                document.documentElement.style.fontSize = fontSize;
+            }
+        })();
+    </script>
 </head>
 
 <body>
@@ -43,11 +52,11 @@
                     <li class="nav-header">
                         <div class="dropdown profile-element text-center">
                             <img alt="image" class="rounded-circle" width="100" height="100"
-                                src="{{ asset('images/default-profile.jpg') }}" />
+                                src="{{ asset('images/Escudo_FICCT.png') }}" />
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="block m-t-xs font-bold"
                                     style="word-wrap: break-word; white-space: normal;">
-                                    BIBLITECA FICCT
+                                    BIBLIOTECA FICCT
                                 </span>
                                 <span> {{ auth()->user()->nombres }} {{ auth()->user()->apellidos }} </span>
                             </a>
@@ -273,6 +282,11 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" href="{{ route('home') }}"> Tablero </a>
+                        </li>
+
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <i class="fa fa-bell"></i> <span class="label label-primary">8</span>

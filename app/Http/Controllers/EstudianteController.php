@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\estudiantes\StoreEstudianteRequest;
 use App\Http\Requests\estudiantes\UpdateEstudianteRequest;
 use App\Models\Estudiante;
+use App\Models\Ingreso;
+use App\Models\Salida;
 use App\Models\User;
 use App\Traits\ImageHandlerTrait;
 use Illuminate\Http\Request;
@@ -104,7 +106,37 @@ class EstudianteController extends Controller
 
     public function reporteEstudiantes(Request $request)
     {
-        $asistencias = [];
-        return view('reportes.estudiantes', compact('asistencias'));
+        $fechaInicio = $request->input('fecha_inicio');
+        $fechaFin = $request->input('fecha_fin');
+
+        $query = Ingreso::with(['credencial.usuario.estudiante'])
+            ->when($fechaInicio, function ($q) use ($fechaInicio) {
+                $q->whereDate('created_at', '>=', $fechaInicio);
+            })
+            ->when($fechaFin, function ($q) use ($fechaFin) {
+                $q->whereDate('created_at', '<=', $fechaFin);
+            })
+            ->orderBy('created_at', 'desc');
+
+        $ingresos = $query->get()->groupBy(function ($ingreso) {
+            return $ingreso->credencial->usuario->estudiante->id ?? 'desconocido';
+        });
+
+        $query2 = Salida::with(['credencial.usuario.estudiante'])
+            ->when($fechaInicio, function ($q) use ($fechaInicio) {
+                $q->whereDate('created_at', '>=', $fechaInicio);
+            })
+            ->when($fechaFin, function ($q) use ($fechaFin) {
+                $q->whereDate('created_at', '<=', $fechaFin);
+            })
+            ->orderBy('created_at', 'desc');
+
+        $salidas = $query2->get()->groupBy(function ($salida) {
+            return $salida->credencial->usuario->estudiante->id ?? 'desconocido';
+        });
+
+        // dd($ingresos);
+
+        return view('reportes.estudiantes', compact('ingresos', 'salidas', 'fechaInicio', 'fechaFin'));
     }
 }

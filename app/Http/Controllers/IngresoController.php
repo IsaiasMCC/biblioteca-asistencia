@@ -23,7 +23,8 @@ class IngresoController extends Controller
     public function verificar($codigo)
     {
         $credencial = Credencial::where('codigo', $codigo)->first();
-        $sala = Sala::all()->first();
+        $sala = Sala::first();
+
         if (!$credencial) {
             return response()->json([
                 'success' => false,
@@ -31,45 +32,40 @@ class IngresoController extends Controller
             ], 404);
         }
 
-        $hoy = Carbon::today();
-
         if (!$credencial->estado) {
             return response()->json([
                 'success' => false,
                 'message' => 'Credencial inactiva'
-            ], 404);
+            ], 403);
         }
+
+        $hoy = Carbon::today();
 
         if ($hoy->lt(Carbon::parse($credencial->fecha_emicion)) || $hoy->gt(Carbon::parse($credencial->fecha_expiracion))) {
             return response()->json([
                 'success' => false,
                 'message' => 'Credencial vencida'
-            ], 404);
+            ], 403);
         }
 
-
-        // Asumimos que ya tienes la credencial_id y sala_id
         $credencialId = $credencial->id;
         $salaId = $sala->id;
         $now = Carbon::now();
-
         $fecha = $now->format('Y-m-d');
         $hora = $now->format('H:i:s');
 
-        // Obtener último ingreso o salida
         $ultimoIngreso = Ingreso::where('credencial_id', $credencialId)
             ->where('sala_id', $salaId)
-            ->latest()
+            ->orderBy('created_at', 'desc')
             ->first();
 
         $ultimoSalida = Salida::where('credencial_id', $credencialId)
             ->where('sala_id', $salaId)
-            ->latest()
+            ->orderBy('created_at', 'desc')
             ->first();
 
-        // Determinar si fue ingreso o salida más reciente
+        // Verificar si no hay ningún registro anterior
         if (!$ultimoIngreso && !$ultimoSalida) {
-            // ✅ Primer acceso, registrar ingreso
             Ingreso::create([
                 'hora' => $hora,
                 'fecha' => $fecha,
@@ -77,8 +73,15 @@ class IngresoController extends Controller
                 'sala_id' => $salaId
             ]);
             $mensaje = "Ingreso registrado";
-        } elseif ($ultimoIngreso && (!$ultimoSalida || $ultimoIngreso->created_at > $ultimoSalida->created_at)) {
-            // ✅ Último fue ingreso → ahora registrar salida
+        }
+        // Si el último fue ingreso y es más reciente que la última salida
+        elseif ($ultimoIngreso && (
+            !$ultimoSalida || (
+                $ultimoIngreso->created_at &&
+                $ultimoSalida->created_at &&
+                $ultimoIngreso->created_at->gt($ultimoSalida->created_at)
+            )
+        )) {
             Salida::create([
                 'hora' => $hora,
                 'fecha' => $fecha,
@@ -86,8 +89,9 @@ class IngresoController extends Controller
                 'sala_id' => $salaId
             ]);
             $mensaje = "Salida registrada";
-        } else {
-            // ✅ Último fue salida → ahora registrar ingreso
+        }
+        // En cualquier otro caso, registrar ingreso
+        else {
             Ingreso::create([
                 'hora' => $hora,
                 'fecha' => $fecha,
@@ -99,12 +103,14 @@ class IngresoController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Acceso permitido',
+            'message' => $mensaje,
             'usuario' => [
                 'nombre' => $credencial->usuario->nombres . ' ' . $credencial->usuario->apellidos,
             ]
         ]);
     }
+
+
 
     public function reporteIngresos(Request $request)
     {

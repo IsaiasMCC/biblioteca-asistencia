@@ -12,5 +12,11 @@ class Salida extends Model
         'fecha',
         'credencial_id',
         'sala_id',
+        'created_at',
     ];
+
+    public function credencial()
+    {
+        return $this->belongsTo(Credencial::class, 'credencial_id');
+    }
 }

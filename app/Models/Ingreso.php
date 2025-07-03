@@ -12,6 +12,7 @@ class Ingreso extends Model
         'fecha',
         'credencial_id',
         'sala_id',
+        'created_at',
     ];
 
     public function credencial()

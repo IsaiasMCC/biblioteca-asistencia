@@ -15,7 +15,6 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AuthCheckCuston;
 use App\Http\Middleware\AuthNotCheck;
-use App\Models\Asistencia;
 use Illuminate\Support\Facades\Route;
 
 
@@ -24,7 +23,7 @@ Route::post('/login', [AuthController::class, 'store'])->name('auth.store')->mid
 
 Route::middleware([AuthCheckCuston::class])->group(function () {
     Route::get('/', function(){
-        return "";
+        return redirect('/home');
     });
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::resource('roles', RoleController::class);

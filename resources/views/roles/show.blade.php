@@ -11,9 +11,11 @@
 @endsection
 
 @push('styles')
+    <link href="{{ asset('css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">{{-- no borrar --}}
 @endpush
 
 @push('scripts')
+
     <script>
         $(document).ready(function() {
             toastr.options = {

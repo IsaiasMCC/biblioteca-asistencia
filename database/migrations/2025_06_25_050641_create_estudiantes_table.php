@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('genero', ['masculino', 'femenino', 'otro']);
             $table->string('foto_url')->nullable();
             $table->boolean('estado')->default(true);
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

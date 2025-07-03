@@ -22,10 +22,10 @@ class DatabaseSeeder extends Seeder
             CredencialSeeder::class,
             SalaSeeder::class,
             HorarioSeeder::class,
-            AsistenciaSeeder::class,
-            IngresoSeeder::class,
-            SalidaSeeder::class,
-            AlertaSeeder::class,
+            // AsistenciaSeeder::class,
+            // IngresoSeeder::class,
+            // SalidaSeeder::class,
+            // AlertaSeeder::class,
         ]);
     }
 }
