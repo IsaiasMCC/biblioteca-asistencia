@@ -40,7 +40,7 @@
 
             scannerPaused = true;
 
-            fetch(`/asistencias/${decodedText}`)
+            fetch(`{{ url('asistencias') }}/${decodedText}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {

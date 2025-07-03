@@ -39,7 +39,7 @@
 
             scannerPaused = true;
 
-            fetch(`/verificar-credencial/${decodedText}`)
+            fetch(`{{ url('verificar-credencial') }}/${decodedText}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
